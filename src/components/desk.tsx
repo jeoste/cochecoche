@@ -32,6 +32,7 @@ import {
   updateTaskAction,
 } from "@/lib/actions";
 import { AccountMenu } from "@/components/account-menu";
+import { Mark } from "@/components/mark";
 import {
   PROJECT_COLORS,
   dueBucket,
@@ -104,7 +105,8 @@ export function Desk({
     <div className="flex min-h-full flex-1">
       <aside className="hidden w-64 shrink-0 flex-col bg-sidebar text-sidebar-foreground md:flex">
         <div className="px-5 pt-6 pb-4">
-          <p className="font-heading text-[11px] tracking-[0.22em] text-sidebar-primary uppercase">
+          <Mark className="size-9" />
+          <p className="font-heading mt-4 text-[11px] tracking-[0.22em] text-sidebar-primary uppercase">
             Open source
           </p>
           <h1 className="font-heading mt-2 text-3xl leading-none">CocheCoche</h1>

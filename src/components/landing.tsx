@@ -2,12 +2,14 @@
 
 import { SignInButton, SignUpButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
+import { Mark } from "@/components/mark";
 
 export function Landing() {
   return (
     <main className="flex min-h-full flex-1 items-center justify-center px-6 py-16">
       <div className="w-full max-w-md">
-        <p className="font-heading text-sm tracking-[0.2em] text-primary uppercase">
+        <Mark className="size-14" />
+        <p className="font-heading mt-6 text-sm tracking-[0.2em] text-primary uppercase">
           Liste de tâches
         </p>
         <h1 className="mt-3 font-heading text-5xl leading-none">CocheCoche</h1>
