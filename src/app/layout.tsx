@@ -21,8 +21,8 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Relève",
-  description: "La relève après tes réunions : tâches, projets, clients.",
+  title: "CocheCoche",
+  description: "La liste de tâches open-source. Coche, date, projets, clients.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

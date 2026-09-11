@@ -8,8 +8,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-# Relève
+# CocheCoche
 
 Public task app. Each Clerk account has its own Neon workspace. Follow `.cursor/skills/sync-tasks/SKILL.md`.
 
-Never commit `.env.local`. Never print API keys (`rlv_...`).
+Never commit `.env.local`. Never print API keys (`cch_...`).

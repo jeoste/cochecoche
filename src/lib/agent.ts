@@ -11,7 +11,7 @@ export function agentKeyFrom(request: Request) {
 
 export async function resolveAgentUserId(request: Request) {
   const token = agentKeyFrom(request);
-  if (!token?.startsWith("rlv_")) return null;
+  if (!token?.startsWith("cch_") && !token?.startsWith("rlv_")) return null;
   const [row] = await getDb()
     .select()
     .from(apiKeys)

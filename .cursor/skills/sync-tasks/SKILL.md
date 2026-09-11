@@ -1,28 +1,28 @@
 ---
 name: sync-tasks
-description: Adds, updates, and completes tasks on Relève from Granola meetings or any conversation. Use when the user mentions Relève, tâches, todo, Granola, réunions, projets, clients, or asks to fill the task list.
+description: Adds, updates, and completes tasks on CocheCoche from Granola meetings or any conversation. Use when the user mentions CocheCoche, Relève, tâches, todo, TickTick, Granola, réunions, projets, clients, or asks to fill the task list.
 ---
 
-# Sync tasks to Relève
+# Sync tasks to CocheCoche
 
-Each Relève account has its own Neon workspace. Write via HTTP with **that user's** API key (Settings → Clés agent). Never print the key.
+Each CocheCoche account has its own workspace. Write via HTTP with **that user's** API key (Settings → Clés agent). Never print the key.
 
 ## Setup
 
 1. `APP_URL` from `.env.local` or production URL.
-2. API key: `rlv_...` created in the Relève UI, not a global env var.
+2. API key: `cch_...` created in the CocheCoche UI, not a global env var.
 3. If the user pasted a key in this chat or store, use it. Otherwise ask them to create one.
 
 ```
-Authorization: Bearer rlv_...
+Authorization: Bearer cch_...
 Content-Type: application/json
 ```
 
 Localhost needs `npm run dev`.
 
-## After a Granola meeting
+## After a Granola meeting (or any source)
 
-1. Granola MCP (`query_granola_meetings` or `get_meetings`) — notes/summary, not full transcript unless needed.
+1. If Granola: MCP (`query_granola_meetings` or `get_meetings`) — notes/summary, not full transcript unless needed.
 2. Only action items for **this user**.
 3. Reuse project names from `GET /api/v1/projects`.
 4. Dates as `YYYY-MM-DD` when stated.

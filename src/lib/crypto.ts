@@ -15,7 +15,7 @@ export function hashToken(token: string) {
 }
 
 export function generateAgentKey() {
-  return `rlv_${randomBytes(24).toString("base64url")}`;
+  return `cch_${randomBytes(24).toString("base64url")}`;
 }
 
 export function keyPrefix(token: string) {
