@@ -2,58 +2,25 @@
 
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
 import { getDb } from "@/db";
-import { projects, tasks } from "@/db/schema";
-import {
-  SESSION_COOKIE,
-  getSession,
-  passwordMatches,
-  signSession,
-} from "@/lib/auth";
+import { apiKeys, projects, tasks } from "@/db/schema";
+import { requireUserId } from "@/lib/auth";
+import { generateAgentKey, hashToken, keyPrefix } from "@/lib/crypto";
 import { PROJECT_COLORS } from "@/lib/dates";
-import { findProjectByName } from "@/lib/queries";
-
-async function requireUser() {
-  if (!(await getSession())) {
-    redirect("/login");
-  }
-}
-
-export async function loginAction(formData: FormData) {
-  const password = String(formData.get("password") ?? "");
-  if (!passwordMatches(password)) {
-    return { error: "Mot de passe incorrect." as const };
-  }
-  const store = await cookies();
-  store.set(SESSION_COOKIE, signSession(), {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 30,
-  });
-  redirect("/");
-}
-
-export async function logoutAction() {
-  const store = await cookies();
-  store.delete(SESSION_COOKIE);
-  redirect("/login");
-}
+import { findProjectByName, getProject } from "@/lib/queries";
 
 export async function createProjectAction(formData: FormData) {
-  await requireUser();
+  const userId = await requireUserId();
   const name = String(formData.get("name") ?? "").trim();
   const client = String(formData.get("client") ?? "").trim() || null;
   const color = String(formData.get("color") ?? "pine");
   if (!name) return;
-  const existing = await findProjectByName(name);
+  const existing = await findProjectByName(userId, name);
   if (existing) return;
   await getDb()
     .insert(projects)
     .values({
+      userId,
       name,
       client,
       color: PROJECT_COLORS.includes(color as (typeof PROJECT_COLORS)[number])
@@ -64,12 +31,13 @@ export async function createProjectAction(formData: FormData) {
 }
 
 export async function createTaskAction(formData: FormData) {
-  await requireUser();
+  const userId = await requireUserId();
   const title = String(formData.get("title") ?? "").trim();
   const dueDate = String(formData.get("dueDate") ?? "").trim() || null;
-  const projectId = readProjectId(formData);
+  const projectId = await ownedProjectId(userId, formData);
   if (!title) return;
   await getDb().insert(tasks).values({
+    userId,
     title,
     dueDate,
     projectId,
@@ -79,7 +47,7 @@ export async function createTaskAction(formData: FormData) {
 }
 
 export async function toggleTaskAction(taskId: string, done: boolean) {
-  await requireUser();
+  const userId = await requireUserId();
   await getDb()
     .update(tasks)
     .set({
@@ -87,18 +55,18 @@ export async function toggleTaskAction(taskId: string, done: boolean) {
       completedAt: done ? new Date() : null,
       updatedAt: new Date(),
     })
-    .where(eq(tasks.id, taskId));
+    .where(and(eq(tasks.id, taskId), eq(tasks.userId, userId)));
   revalidatePath("/");
 }
 
 export async function updateTaskAction(formData: FormData) {
-  await requireUser();
+  const userId = await requireUserId();
   const id = String(formData.get("id") ?? "");
   if (!id) return;
   const title = String(formData.get("title") ?? "").trim();
   const notes = String(formData.get("notes") ?? "").trim() || null;
   const dueDate = String(formData.get("dueDate") ?? "").trim() || null;
-  const projectId = readProjectId(formData);
+  const projectId = await ownedProjectId(userId, formData);
   await getDb()
     .update(tasks)
     .set({
@@ -108,27 +76,52 @@ export async function updateTaskAction(formData: FormData) {
       projectId,
       updatedAt: new Date(),
     })
-    .where(eq(tasks.id, id));
+    .where(and(eq(tasks.id, id), eq(tasks.userId, userId)));
   revalidatePath("/");
 }
 
 export async function deleteTaskAction(taskId: string) {
-  await requireUser();
-  await getDb().delete(tasks).where(eq(tasks.id, taskId));
+  const userId = await requireUserId();
+  await getDb()
+    .delete(tasks)
+    .where(and(eq(tasks.id, taskId), eq(tasks.userId, userId)));
   revalidatePath("/");
-}
-
-function readProjectId(formData: FormData) {
-  const value = String(formData.get("projectId") ?? "").trim();
-  if (!value || value === "none") return null;
-  return value;
 }
 
 export async function archiveProjectAction(projectId: string) {
-  await requireUser();
+  const userId = await requireUserId();
   await getDb()
     .update(projects)
     .set({ archived: true })
-    .where(and(eq(projects.id, projectId)));
+    .where(and(eq(projects.id, projectId), eq(projects.userId, userId)));
   revalidatePath("/");
+}
+
+export async function createApiKeyAction(formData: FormData) {
+  const userId = await requireUserId();
+  const name = String(formData.get("name") ?? "Agent").trim() || "Agent";
+  const token = generateAgentKey();
+  await getDb().insert(apiKeys).values({
+    userId,
+    name,
+    keyHash: hashToken(token),
+    keyPrefix: keyPrefix(token),
+  });
+  revalidatePath("/");
+  return { token };
+}
+
+export async function revokeApiKeyAction(id: string) {
+  const userId = await requireUserId();
+  await getDb()
+    .delete(apiKeys)
+    .where(and(eq(apiKeys.id, id), eq(apiKeys.userId, userId)));
+  revalidatePath("/");
+}
+
+async function ownedProjectId(userId: string, formData: FormData) {
+  const value = String(formData.get("projectId") ?? "").trim();
+  if (!value || value === "none") return null;
+  const project = await getProject(userId, value);
+  return project?.id ?? null;
 }

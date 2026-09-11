@@ -1,4 +1,4 @@
-import { isAgentRequest, unauthorized } from "@/lib/agent";
+import { resolveAgentUserId, unauthorized } from "@/lib/agent";
 import { ensureProject } from "@/lib/projects";
 import { getDeskData } from "@/lib/queries";
 import { taskInput } from "@/lib/validators";
@@ -6,8 +6,9 @@ import { getDb } from "@/db";
 import { tasks } from "@/db/schema";
 
 export async function GET(request: Request) {
-  if (!isAgentRequest(request)) return unauthorized();
-  const { tasks: rows, projects } = await getDeskData();
+  const userId = await resolveAgentUserId(request);
+  if (!userId) return unauthorized();
+  const { tasks: rows, projects } = await getDeskData(userId);
   const url = new URL(request.url);
   const status = url.searchParams.get("status");
   const project = url.searchParams.get("project");
@@ -25,20 +26,22 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  if (!isAgentRequest(request)) return unauthorized();
+  const userId = await resolveAgentUserId(request);
+  if (!userId) return unauthorized();
   const parsed = taskInput.safeParse(await request.json());
   if (!parsed.success) {
     return Response.json({ error: parsed.error.flatten() }, { status: 400 });
   }
   const body = parsed.data;
   const project = await ensureProject({
+    userId,
     project: body.project,
     client: body.client,
-    color: undefined,
   });
   const [task] = await getDb()
     .insert(tasks)
     .values({
+      userId,
       title: body.title,
       notes: body.notes ?? null,
       dueDate: body.dueDate ?? null,

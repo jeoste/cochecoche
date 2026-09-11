@@ -1,12 +1,13 @@
 import { Desk } from "@/components/desk";
-import { getSession } from "@/lib/auth";
+import { Landing } from "@/components/landing";
+import { getUserId } from "@/lib/auth";
 import { getDeskData } from "@/lib/queries";
-import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  if (!(await getSession())) redirect("/login");
+  const userId = await getUserId();
+  if (!userId) return <Landing />;
 
   if (!process.env.DATABASE_URL) {
     return (
@@ -16,13 +17,12 @@ export default async function Home() {
         </p>
         <h1 className="font-heading mt-3 text-3xl">Base absente</h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          Accepte les conditions Neon dans Vercel, relance l’intégration, puis
-          `vercel env pull .env.local --yes`.
+          `DATABASE_URL` manque dans l’environnement.
         </p>
       </main>
     );
   }
 
-  const data = await getDeskData();
+  const data = await getDeskData(userId);
   return <Desk projects={data.projects} tasks={data.tasks} />;
 }

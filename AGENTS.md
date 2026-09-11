@@ -10,6 +10,6 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # Relève
 
-Private task list. Follow `.cursor/skills/sync-tasks/SKILL.md` to create or update tasks from Granola or any meeting.
+Public task app. Each Clerk account has its own Neon workspace. Follow `.cursor/skills/sync-tasks/SKILL.md`.
 
-Never commit `.env.local`. Never print `APP_PASSWORD` or `AGENT_API_KEY`.
+Never commit `.env.local`. Never print API keys (`rlv_...`).

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 import { Figtree, IBM_Plex_Mono, Syne } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
@@ -22,7 +23,6 @@ const mono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: "Relève",
   description: "La relève après tes réunions : tâches, projets, clients.",
-  robots: { index: false, follow: false },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -32,7 +32,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${display.variable} ${sans.variable} ${mono.variable} dark h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-background text-foreground">
-        <TooltipProvider>{children}</TooltipProvider>
+        <ClerkProvider>
+          <TooltipProvider>{children}</TooltipProvider>
+        </ClerkProvider>
       </body>
     </html>
   );

@@ -28,10 +28,10 @@ import {
   createProjectAction,
   createTaskAction,
   deleteTaskAction,
-  logoutAction,
   toggleTaskAction,
   updateTaskAction,
 } from "@/lib/actions";
+import { AccountMenu } from "@/components/account-menu";
 import {
   PROJECT_COLORS,
   dueBucket,
@@ -145,24 +145,16 @@ export function Desk({
             </FilterButton>
           ))}
         </nav>
-        <div className="flex flex-col gap-2 p-4">
+        <div className="flex flex-col gap-3 p-4">
           <ProjectDialog />
-          <form action={logoutAction}>
-            <Button
-              type="submit"
-              variant="ghost"
-              className="w-full justify-start text-sidebar-foreground/70"
-            >
-              Quitter
-            </Button>
-          </form>
+          <AccountMenu />
         </div>
       </aside>
 
       <main className="flex min-w-0 flex-1 flex-col px-4 py-6 sm:px-8">
-        <div className="mb-4 md:hidden">
+        <div className="mb-4 flex items-center justify-between gap-3 md:hidden">
           <select
-            className="h-9 w-full rounded-lg border border-input bg-card px-2 text-sm"
+            className="h-9 min-w-0 flex-1 rounded-lg border border-input bg-card px-2 text-sm"
             value={filter}
             onChange={(event) => setFilter(event.target.value)}
           >
@@ -175,6 +167,7 @@ export function Desk({
               </option>
             ))}
           </select>
+          <AccountMenu />
         </div>
         <header className="mb-6 flex flex-wrap items-end justify-between gap-4">
           <div>

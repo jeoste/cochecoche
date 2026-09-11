@@ -1,4 +1,7 @@
-import { safeEqual } from "@/lib/auth";
+import { eq } from "drizzle-orm";
+import { getDb } from "@/db";
+import { apiKeys } from "@/db/schema";
+import { hashToken } from "@/lib/crypto";
 
 export function agentKeyFrom(request: Request) {
   const header = request.headers.get("authorization");
@@ -6,11 +9,20 @@ export function agentKeyFrom(request: Request) {
   return header.slice("Bearer ".length).trim();
 }
 
-export function isAgentRequest(request: Request) {
-  const expected = process.env.AGENT_API_KEY;
-  const provided = agentKeyFrom(request);
-  if (!expected || !provided) return false;
-  return safeEqual(provided, expected);
+export async function resolveAgentUserId(request: Request) {
+  const token = agentKeyFrom(request);
+  if (!token?.startsWith("rlv_")) return null;
+  const [row] = await getDb()
+    .select()
+    .from(apiKeys)
+    .where(eq(apiKeys.keyHash, hashToken(token)))
+    .limit(1);
+  if (!row) return null;
+  await getDb()
+    .update(apiKeys)
+    .set({ lastUsedAt: new Date() })
+    .where(eq(apiKeys.id, row.id));
+  return row.userId;
 }
 
 export function unauthorized() {

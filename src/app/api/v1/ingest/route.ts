@@ -1,17 +1,19 @@
 import { getDb } from "@/db";
 import { tasks } from "@/db/schema";
-import { isAgentRequest, unauthorized } from "@/lib/agent";
+import { resolveAgentUserId, unauthorized } from "@/lib/agent";
 import { ensureProject } from "@/lib/projects";
 import { ingestInput } from "@/lib/validators";
 
 export async function POST(request: Request) {
-  if (!isAgentRequest(request)) return unauthorized();
+  const userId = await resolveAgentUserId(request);
+  if (!userId) return unauthorized();
   const parsed = ingestInput.safeParse(await request.json());
   if (!parsed.success) {
     return Response.json({ error: parsed.error.flatten() }, { status: 400 });
   }
   const body = parsed.data;
   const project = await ensureProject({
+    userId,
     project: body.project,
     client: body.client,
   });
@@ -27,6 +29,7 @@ export async function POST(request: Request) {
     const [task] = await getDb()
       .insert(tasks)
       .values({
+        userId,
         title: item.title,
         notes: notes || null,
         dueDate: item.dueDate ?? null,

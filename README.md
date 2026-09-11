@@ -1,30 +1,28 @@
 # Relève
 
-Site privé de tâches (Mac + Windows via navigateur). Toi tu coches, dates et projets. Un agent (Cursor + Granola) écrit via l’API.
+Tableau de tâches après une réunion. Code source public. Chaque compte a son propre espace Neon.
 
-## Stack
+- UI : cocher, dates, projets / clients
+- Agent : `POST /api/v1/ingest` avec **ta** clé (`rlv_…`)
 
-Next.js (App Router) · Neon Postgres · Vercel · API agent `Bearer`
+## Compte
+
+1. Ouvre le site, crée un compte
+2. **Clé agent** dans la barre latérale — copie-la une fois
+3. L’agent utilise `Authorization: Bearer rlv_…`
+
+Les tâches d’un compte ne sont jamais visibles des autres.
 
 ## Local
 
 ```bash
 cp .env.example .env.local
-# remplir DATABASE_URL, AUTH_SECRET, APP_PASSWORD, AGENT_API_KEY
+# DATABASE_URL + clés Clerk
 npm install
 npm run db:push
 npm run dev
 ```
 
-Ouvre [http://localhost:3000](http://localhost:3000). Mot de passe = `APP_PASSWORD`.
-
 ## Agent
 
-Skill projet : `.cursor/skills/sync-tasks/SKILL.md`
-
-```
-POST /api/v1/ingest
-Authorization: Bearer $AGENT_API_KEY
-```
-
-Granola → extraire tes actions → ingest (dédupliqué par réunion + titre).
+Skill : `.cursor/skills/sync-tasks/SKILL.md`
