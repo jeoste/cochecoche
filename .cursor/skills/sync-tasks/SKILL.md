@@ -1,9 +1,9 @@
 ---
 name: sync-tasks
-description: Adds, updates, and completes tasks on the private Desk app from Granola meetings or any conversation. Use when the user mentions tâches, todo, Granola, réunions, projets, clients, or asks to fill the task list.
+description: Adds, updates, and completes tasks on Relève from Granola meetings or any conversation. Use when the user mentions Relève, tâches, todo, Granola, réunions, projets, clients, or asks to fill the task list.
 ---
 
-# Sync tasks to Desk
+# Sync tasks to Relève
 
 Private task app in this repo. You write via the HTTP API. The user checks items, due dates, and projects in the web UI.
 

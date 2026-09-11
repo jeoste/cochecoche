@@ -20,8 +20,8 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Desk — tâches",
-  description: "Liste privée de tâches, alimentée par toi et par l’agent.",
+  title: "Relève",
+  description: "La relève après tes réunions : tâches, projets, clients.",
   robots: { index: false, follow: false },
 };
 

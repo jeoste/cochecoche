@@ -1,4 +1,4 @@
-# Desk
+# Relève
 
 Site privé de tâches (Mac + Windows via navigateur). Toi tu coches, dates et projets. Un agent (Cursor + Granola) écrit via l’API.
 

@@ -8,7 +8,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-# Desk
+# Relève
 
 Private task list. Follow `.cursor/skills/sync-tasks/SKILL.md` to create or update tasks from Granola or any meeting.
 
