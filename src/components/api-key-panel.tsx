@@ -17,12 +17,12 @@ export function ApiKeyPanel({ keys }: { keys: ApiKey[] }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <ul className="flex flex-col gap-2 text-sm">
+      <ul className="flex flex-col">
         {keys.length ? (
           keys.map((key) => (
             <li
               key={key.id}
-              className="flex items-center justify-between gap-2 rounded-lg border border-border px-3 py-2"
+              className="flex items-center justify-between gap-2 border-b border-border py-3 text-sm"
             >
               <span className="min-w-0 truncate font-mono text-xs">
                 {key.name} · {key.keyPrefix}…
@@ -38,11 +38,11 @@ export function ApiKeyPanel({ keys }: { keys: ApiKey[] }) {
             </li>
           ))
         ) : (
-          <li className="text-muted-foreground">Aucune clé.</li>
+          <li className="py-3 text-sm text-muted-foreground">Aucune clé.</li>
         )}
       </ul>
       {token ? (
-        <p className="break-all rounded-lg bg-muted px-3 py-2 font-mono text-xs">
+        <p className="break-all rounded-md bg-muted px-3 py-2 font-mono text-xs">
           {token}
           <span className="mt-1 block text-muted-foreground">
             Copie-la maintenant, elle ne s’affichera plus.
@@ -54,7 +54,7 @@ export function ApiKeyPanel({ keys }: { keys: ApiKey[] }) {
           <Label htmlFor="key-name">Nom</Label>
           <Input id="key-name" name="name" defaultValue="Agent" />
         </div>
-        <Button type="submit">Générer</Button>
+        <Button type="submit">Générer une clé</Button>
       </form>
     </div>
   );

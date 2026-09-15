@@ -8,11 +8,11 @@ export function Mark({ className }: { className?: string }) {
       aria-hidden
       focusable="false"
     >
-      <rect width="32" height="32" rx="8" fill="#D4A24C" />
+      <rect width="32" height="32" rx="8" fill="#DC4C3E" />
       <path
         d="M8.4 16.4 13.2 21.6 23.8 9.6"
         fill="none"
-        stroke="#1A2C28"
+        stroke="#FFFFFF"
         strokeWidth="3.4"
         strokeLinecap="round"
         strokeLinejoin="round"

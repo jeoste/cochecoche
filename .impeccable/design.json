@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-15T13:08:00.000Z",
+  "title": "Design System: CocheCoche",
+  "extensions": {
+    "colorMeta": {
+      "primary": { "role": "primary", "displayName": "Todoist Red", "canonical": "#DC4C3E", "tonalRamp": ["#3d100c", "#6b1c16", "#9a2e26", "#c44134", "#DC4C3E", "#e57368", "#f0a39c", "#f8d4d1"] },
+      "due-today": { "role": "secondary", "displayName": "Today Green", "canonical": "#058527", "tonalRamp": ["#02240b", "#044e17", "#058527", "#25a344", "#4cbb66", "#7dd394", "#b6e8c2", "#e3f6e8"] },
+      "paper": { "role": "neutral", "displayName": "Paper", "canonical": "#FFFFFF", "tonalRamp": ["#202020", "#5c5c5c", "#808080", "#b8b8b8", "#dddddd", "#eeeeee", "#f5f5f5", "#ffffff"] },
+      "sidebar": { "role": "neutral", "displayName": "Sidebar Mist", "canonical": "#FAFAFA", "tonalRamp": ["#ececec", "#f3f3f3", "#f5f5f5", "#fafafa", "#ffffff", "#ffffff", "#ffffff", "#ffffff"] },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "#202020", "tonalRamp": ["#111111", "#202020", "#404040", "#5c5c5c", "#808080", "#b8b8b8", "#dddddd", "#f5f5f5"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Landing h1 only." },
+      "headline": { "displayName": "Headline", "purpose": "View titles such as Aujourd’hui." },
+      "title": { "displayName": "Title", "purpose": "Section headers in the list." },
+      "body": { "displayName": "Body", "purpose": "Task titles and supporting copy." },
+      "label": { "displayName": "Label", "purpose": "Sidebar and metadata." }
+    },
+    "shadows": [
+      { "name": "preview-lift", "value": "0 12px 40px rgba(32,32,32,0.08)", "purpose": "Landing product frame only." }
+    ],
+    "motion": [
+      { "name": "check-pop", "value": "180ms cubic-bezier(0.2, 0.85, 0.2, 1)", "purpose": "Circular checkbox fill." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Red fill CTA for create and confirm.",
+      "html": "<button class=\"ds-btn-primary\">Commencer</button>",
+      "css": ".ds-btn-primary { background: #DC4C3E; color: #fff; padding: 8px 16px; height: 40px; border: none; border-radius: 8px; font: 500 14px Public Sans, sans-serif; cursor: pointer; } .ds-btn-primary:hover { background: #c44134; } .ds-btn-primary:focus-visible { outline: 2px solid #DC4C3E; outline-offset: 2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Quiet action in chrome.",
+      "html": "<button class=\"ds-btn-ghost\">Connexion</button>",
+      "css": ".ds-btn-ghost { background: transparent; color: #202020; padding: 8px 12px; border: none; border-radius: 8px; font: 500 14px Public Sans, sans-serif; cursor: pointer; } .ds-btn-ghost:hover { background: #F5F5F5; } .ds-btn-ghost:focus-visible { outline: 2px solid #DC4C3E; outline-offset: 2px; }"
+    },
+    {
+      "name": "Task Check",
+      "kind": "custom",
+      "refersTo": "task-check",
+      "description": "18px circular complete control.",
+      "html": "<button class=\"ds-task-check\" aria-pressed=\"false\"></button>",
+      "css": ".ds-task-check { width: 18px; height: 18px; border-radius: 9999px; border: 1.5px solid #b8b8b8; background: #fff; padding: 0; cursor: pointer; } .ds-task-check:hover { border-color: #DC4C3E; background: rgba(220,76,62,0.1); } .ds-task-check[aria-pressed=\"true\"] { background: #DC4C3E; border-color: #DC4C3E; } .ds-task-check:focus-visible { outline: 2px solid rgba(220,76,62,0.3); }"
+    },
+    {
+      "name": "Add Task",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Red text row that opens the composer.",
+      "html": "<button class=\"ds-add-task\"><span class=\"ds-add-task-plus\">+</span>Ajouter une tâche</button>",
+      "css": ".ds-add-task { display: flex; align-items: center; gap: 8px; color: #DC4C3E; background: transparent; border: none; font: 400 14px Public Sans, sans-serif; cursor: pointer; padding: 8px 12px; border-radius: 8px; } .ds-add-task:hover { background: rgba(220,76,62,0.05); } .ds-add-task-plus { width: 18px; height: 18px; border: 1px solid currentColor; border-radius: 9999px; display: grid; place-items: center; font-size: 11px; }"
+    },
+    {
+      "name": "Sidebar Nav Item",
+      "kind": "nav",
+      "refersTo": "nav-item-active",
+      "description": "32px row with count.",
+      "html": "<button class=\"ds-nav-item ds-nav-item-active\">Aujourd’hui<span class=\"ds-nav-count\">4</span></button>",
+      "css": ".ds-nav-item { display: flex; align-items: center; height: 32px; width: 100%; padding: 0 8px; border: none; background: transparent; border-radius: 6px; font: 400 13px Public Sans, sans-serif; color: #202020; cursor: pointer; } .ds-nav-item:hover { background: rgba(236,236,236,0.7); } .ds-nav-item-active { background: #ececec; font-weight: 500; } .ds-nav-count { margin-left: auto; font-size: 12px; color: #5c5c5c; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "button-ghost",
+      "description": "Composer and settings fields.",
+      "html": "<input class=\"ds-input\" placeholder=\"Nom de la tâche\" />",
+      "css": ".ds-input { height: 32px; width: 100%; border: 1px solid #dddddd; border-radius: 8px; padding: 0 10px; font: 400 14px Public Sans, sans-serif; color: #202020; background: #fff; } .ds-input:focus { outline: 2px solid rgba(220,76,62,0.3); border-color: #DC4C3E; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "La liste d'aujourd'hui",
+    "overview": "CocheCoche s'habille comme une liste Todoist : papier blanc, rail gris pâle, rouge unique pour l'action et le logo. La densité est celle d'un outil quotidien, pas d'une landing marketing. Pas de tickets perforés, pas de forêt sombre, pas d'eyebrow.",
+    "keyCharacteristics": [
+      "Un seul accent saturé (rouge #DC4C3E)",
+      "Cases à cocher circulaires 18px",
+      "Listes plates à filets 1px, jamais de cartes-tâches",
+      "Public Sans pour tout",
+      "Sidebar 280px, Aujourd'hui comme vue par défaut"
+    ],
+    "rules": [
+      { "name": "The One Red Rule", "body": "Le rouge ne décore pas. Il coche, il ajoute, il signale le retard.", "section": "colors" },
+      { "name": "The One Face Rule", "body": "Pas de Syne, pas de mono costume. Le mono reste pour les préfixes de clé API.", "section": "typography" }
+    ],
+    "dos": [
+      "Garder Aujourd'hui comme ouverture connectée",
+      "Colorer les dates (rouge / vert) plutôt que des badges",
+      "Garder le logo au rouge primaire, coche blanche"
+    ],
+    "donts": [
+      "Recréer les tickets perforés",
+      "Forcer le dark pine",
+      "Ajouter un eyebrow au-dessus d'un titre",
+      "Inventer priorités, labels ou karma"
+    ]
+  }
+}

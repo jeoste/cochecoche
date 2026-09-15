@@ -45,3 +45,37 @@ export function formatDue(dueDate: string | null) {
     month: "short",
   }).format(date);
 }
+
+export function formatDueShort(dueDate: string | null, today = todayIso()) {
+  if (!dueDate) return null;
+  if (dueDate === today) return "Auj.";
+  if (dueDate === addDaysIso(today, 1)) return "Dem.";
+  const [y, m, d] = dueDate.split("-").map(Number);
+  const date = new Date(y, m - 1, d);
+  return new Intl.DateTimeFormat("fr-FR", {
+    day: "numeric",
+    month: "short",
+  }).format(date);
+}
+
+export function dueTone(
+  dueDate: string | null,
+  today = todayIso(),
+): "overdue" | "today" | "soon" | "muted" {
+  if (!dueDate) return "muted";
+  if (dueDate < today) return "overdue";
+  if (dueDate === today) return "today";
+  if (dueDate <= addDaysIso(today, 1)) return "soon";
+  return "muted";
+}
+
+export function formatDayHeading(iso: string) {
+  const [y, m, d] = iso.split("-").map(Number);
+  const date = new Date(y, m - 1, d);
+  const heading = new Intl.DateTimeFormat("fr-FR", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  }).format(date);
+  return heading.charAt(0).toUpperCase() + heading.slice(1);
+}
